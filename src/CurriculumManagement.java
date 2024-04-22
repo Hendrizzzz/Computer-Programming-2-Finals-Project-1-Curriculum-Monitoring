@@ -38,36 +38,59 @@ public class CurriculumManagement implements CurriculumManager{
 
 
     @Override
-    public ArrayList<Course> showCurriculum() {
+    public ArrayList<Course> getCurriculum() {
         return courses;
     }
 
 
 
     @Override
-    public void editGrade(ArrayList<Byte> grades, int year, String term) {
+    public void editGrade(ArrayList<Byte> grades, int year, String term) throws ValueOutOfRangeException {
         int count = 0;
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
+
+                if (notValid(grades.get(count), (byte) 65, (byte) 99)){
+                    throw new ValueOutOfRangeException();
+                }
                 course.setGrade(grades.get(count++));
             }
         }
     }
 
+    private boolean notValid(Byte number, byte minimum, byte maximum) {
+        return number > maximum || number < minimum;
+    }
 
 
     @Override
-    public void editCourse(ArrayList<String[]> courseDetails, int year, String term) {
+    public void editCourse(ArrayList<String[]> courseDetails, int year, String term) throws ValueOutOfRangeException {
         int count = 0;
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
-                course.setCourseNumber(courseDetails.get(count++)[0]);
-                course.setDescriptiveTitle(courseDetails.get(count++)[1]);
+                if (notValid(Byte.parseByte(courseDetails.get(count)[2]), (byte) 1, (byte) 3)){
+                    throw new ValueOutOfRangeException();
+                }
+                course.setCourseNumber(courseDetails.get(count)[0]);
+                course.setDescriptiveTitle(courseDetails.get(count)[1]);
                 course.setUnits(Byte.parseByte(courseDetails.get(count++)[2]));
             }
         }
     }
 
+    @Override
+    public double calculateGPA() {
+        int units = 0;
+        double score = 0;
+        for (Course course : courses){
+            if (course.getGrade() == 0){
+                continue;
+            }
+            score += course.getGrade();
+            units += course.getUnits();
+        }
+        return score/units;
+    }
 
 
     @Override
@@ -82,4 +105,13 @@ public class CurriculumManagement implements CurriculumManager{
         }
     }
 
+
+
+
+}
+
+class ValueOutOfRangeException extends Exception{
+    public ValueOutOfRangeException(){
+        super();
+    }
 }
