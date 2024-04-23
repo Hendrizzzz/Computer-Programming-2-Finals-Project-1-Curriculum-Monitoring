@@ -155,8 +155,6 @@ public class CurriculumGui extends JFrame {
                     course.getUnits(),
                     course.getGrade() == 0 ? "Not Yet Taken" : String.valueOf(course.getGrade())));
         }
-
-        // Create a JTextArea and set its content
         displayArea = new JTextArea(formattedText.toString());
         displayArea.setFont(font2);
         displayArea.setEditable(false);
