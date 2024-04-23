@@ -1,4 +1,3 @@
-package SecondSemOOP.Finals.Project1;
 
 public class Course {
     private byte year;
