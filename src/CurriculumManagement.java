@@ -46,7 +46,6 @@ public class CurriculumManagement implements CurriculumManager{
 
 
     /**
-     *
      * @return the Arraylist of Courses
      */
     @Override
@@ -77,7 +76,6 @@ public class CurriculumManagement implements CurriculumManager{
     }
 
     /**
-     *
      * @param number number to be checked
      * @param minimum lowest number allowed
      * @param maximum highest number allowed
@@ -89,7 +87,6 @@ public class CurriculumManagement implements CurriculumManager{
 
 
     /**
-     *
      * @param courseDetails the list of courses to be set
      * @param year the year of the course to be changed
      * @param term the term of the course to be changed
@@ -142,7 +139,7 @@ public class CurriculumManagement implements CurriculumManager{
                     grade = "Not Yet Taken";
                 }
                 writer.write(course.getYear() + "," + course.getTerm() + "," + course.getCourseNumber() +
-                        course.getDescriptiveTitle() + "," + course.getUnits() + "," + grade + "\n");
+                                course.getDescriptiveTitle() + "," + course.getUnits() + "," + grade + "\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
