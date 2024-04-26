@@ -32,20 +32,20 @@ public class CurriculumManagement implements CurriculumManager{
     private Course readCourse(String[] courseText) {
         byte year = Byte.parseByte(courseText[0]);
         String term = courseText[1];
-        String courseNumber = courseText[3];
-        byte units = Byte.parseByte(courseText[4]);
+        String courseNumber = courseText[2];
+        String courseTitle = courseText[3];
+        float units = Float.parseFloat(courseText[4]);
 
-        if (courseText[3].equals("Not Yet Taken")){
-            return new Course(year, term, courseText[2], courseNumber, units);
+        if (courseText[5].equals("Not Yet Taken")){
+            return new Course(year, term, courseNumber, courseTitle, units);
         } else {
             byte grade = Byte.parseByte(courseText[5]);
-            return new Course(year, term, courseText[2], courseNumber, units, grade);
+            return new Course(year, term, courseNumber, courseTitle, units, (grade));
         }
     }
 
 
     /**
-     * 
      * @return the Arraylist of Courses
      */
     @Override
@@ -76,7 +76,6 @@ public class CurriculumManagement implements CurriculumManager{
     }
 
     /**
-     * 
      * @param number number to be checked
      * @param minimum lowest number allowed
      * @param maximum highest number allowed
@@ -88,7 +87,6 @@ public class CurriculumManagement implements CurriculumManager{
 
 
     /**
-     * 
      * @param courseDetails the list of courses to be set
      * @param year the year of the course to be changed
      * @param term the term of the course to be changed

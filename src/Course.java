@@ -1,12 +1,14 @@
+
 public class Course {
     private byte year;
     private String term;
     private String courseNumber;
     private String descriptiveTitle;
-    private byte units;
+    private float units;
     private byte grade;
 
-    public Course(byte year, String term, String courseNumber, String descriptiveTitle, byte units) {
+
+    public Course(byte year, String term, String courseNumber, String descriptiveTitle, float units) {
         this.year = year;
         this.term = term;
         this.courseNumber = courseNumber;
@@ -15,15 +17,16 @@ public class Course {
         grade = 0;
     }
 
-    public Course(byte year, String term, String courseNumber, String descriptiveTitle, byte units, byte grade) {
+
+    public Course(byte year, String term, String courseNumber, String descriptiveTitle, float units, byte grade) {
         this.year = year;
         this.term = term;
         this.courseNumber = courseNumber;
         this.descriptiveTitle = descriptiveTitle;
         this.units = units;
         this.grade = grade;
-    }
 
+    }
 
     public byte getYear() {
         return year;
@@ -57,7 +60,7 @@ public class Course {
         this.descriptiveTitle = descriptiveTitle;
     }
 
-    public byte getUnits() {
+    public float getUnits() {
         return units;
     }
 
@@ -72,6 +75,4 @@ public class Course {
     public void setGrade(byte grade) {
         this.grade = grade;
     }
-
-
 }
