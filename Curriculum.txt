@@ -18,8 +18,8 @@
 1,Second Semester,GENVI,Environmental Science,3,Not Yet Taken
 1,Second Semester,FIT CS,Physical Activity Towards Health and Fitness (Combative Sports),2,Not Yet Taken
 1,Second Semester,CFE 102,Christian Morality in Our Times,3,Not Yet Taken
-1,Short Semester,CS 131,Software Modeling and Analysis,3,Not Yet Taken
-1,Short Semester,CS 132,Mathematics for Computer Science,3,Not Yet Taken
+1,Short Term,CS 131,Software Modeling and Analysis,3,Not Yet Taken
+1,Short Term,CS 132,Mathematics for Computer Science,3,Not Yet Taken
 2,First Semester,CS 211,Data Structures,2,Not Yet Taken
 2,First Semester,CS 211L,Data Structures (Lab),1,Not Yet Taken
 2,First Semester,CS 212,Operating Systems,2,Not Yet Taken
@@ -40,10 +40,10 @@
 2,Second Semester,NSTP-CWTS 2,Social Awareness and Empowerment for Service,3,Not Yet Taken
 2,Second Semester,FIT AQ,Physical Activity Towards Health and Fitness (Aquatics),2,Not Yet Taken
 2,Second Semester,CFE 104,CICM Missionary Identity,3,Not Yet Taken
-2,Short Semester,CS 231,Computer Networks,2,Not Yet Taken
-2,Short Semester,CS 231L,Computer Networks (Lab),1,Not Yet Taken
-2,Short Semester,GRIZAL,The Life and Works of Rizal,3,Not Yet Taken
-2,Short Semester,GENTREP,The Entrepreneurial Mind,3,Not Yet Taken
+2,Short Term,CS 231,Computer Networks,2,Not Yet Taken
+2,Short Term,CS 231L,Computer Networks (Lab),1,Not Yet Taken
+2,Short Term,GRIZAL,The Life and Works of Rizal,3,Not Yet Taken
+2,Short Term,GENTREP,The Entrepreneurial Mind,3,Not Yet Taken
 3,First Semester,CS 311,Applications Development,2,Not Yet Taken
 3,First Semester,CS 311L,Applications Development (Lab),1,Not Yet Taken
 3,First Semester,CS 312,Web Systems Development,2,Not Yet Taken
@@ -61,7 +61,7 @@
 3,Second Semester,CS 324,Methods of Research in Computer Science,3,Not Yet Taken
 3,Second Semester,CS 325,Structure of Programming Languages,3,Not Yet Taken
 3,Second Semester,CFE 105B,CICM in Action:Environmental Planning and Management and Disaster Risk Reduction Management,1.5,Not Yet Taken
-3,Short Semester,CS 331,Practicum,6,Not Yet Taken
+3,Short Term,CS 331,Practicum,6,Not Yet Taken
 4,First Semester,CFE 106A,Embracing the CICM Mission ,1.5,Not Yet Taken
 4,First Semester,CS 411,CS Thesis 1,3,Not Yet Taken
 4,First Semester,CS 412,Information Assurance and Security,3,Not Yet Taken

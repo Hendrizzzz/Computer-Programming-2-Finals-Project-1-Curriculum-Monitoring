@@ -14,7 +14,7 @@ public class CurriculumManagement implements CurriculumManager{
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null){
-                String[] courseText = line.split(",");
+                String[] courseText = line.split(",(?!\\s)");
                 Course course = readCourse(courseText);
                 courses.add(course);
             }
@@ -121,7 +121,7 @@ public class CurriculumManagement implements CurriculumManager{
                 continue;
             }
             score += course.getGrade();
-            units += course.getUnits();
+            units += (int) course.getUnits();
         }
         return score/units;
     }
@@ -146,8 +146,9 @@ public class CurriculumManagement implements CurriculumManager{
         }
     }
 
-
-
+    public void reset() {
+        courses.clear();
+    }
 
 }
 
