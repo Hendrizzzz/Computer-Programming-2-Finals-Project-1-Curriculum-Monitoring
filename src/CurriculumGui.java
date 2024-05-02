@@ -20,6 +20,8 @@ public class CurriculumGui extends JFrame {
 
     private JComboBox<String> oneDropdown, twoDropdown, threeDropdown, fourDropdown, fiveDropdown, sixDropdown, sevenDropdown, eightDropdown;
 
+    private static CurriculumManagement curriculum = new CurriculumManagement();
+
 
     private static final Font font1 = new Font("Arial", Font.BOLD, 20);
     private static final Font font2 = new Font("Times New Roman", Font.BOLD, 15);
@@ -29,6 +31,7 @@ public class CurriculumGui extends JFrame {
     }
 
     public void CurriculumGUI() {
+        curriculum.fillCurriculum();
 
         courseTable = new JTable();
 
@@ -97,6 +100,7 @@ public class CurriculumGui extends JFrame {
                             choiceFour();
                             break;
                         case 5:
+                            curriculum.saveCurriculum();
                             System.exit(0);
                             break;
                     }
@@ -126,7 +130,6 @@ public class CurriculumGui extends JFrame {
         JScrollPane scrollPane = new JScrollPane(courseTable);
         scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-
         fillTable();
 
         choiceOneFrame.add(comboBoxPanel, BorderLayout.NORTH);
@@ -139,10 +142,6 @@ public class CurriculumGui extends JFrame {
 
         twoDropdown.addActionListener(e -> fillTable());
 
-        CurriculumManagement curriculum = new CurriculumManagement();
-
-        curriculum.reset();
-        curriculum.fillCurriculum();
 
         ArrayList<Course> list = curriculum.getCurriculum();
         ArrayList<Course> filtered = new ArrayList<>();
@@ -275,10 +274,6 @@ public class CurriculumGui extends JFrame {
 
         fourDropdown.addActionListener(e -> fillTable2());
 
-        CurriculumManagement curriculum = new CurriculumManagement();
-
-        curriculum.reset();
-        curriculum.fillCurriculum();
 
         ArrayList<Course> list = curriculum.getCurriculum();
         ArrayList<Course> filtered = new ArrayList<>();
@@ -389,10 +384,7 @@ public class CurriculumGui extends JFrame {
 
         sixDropdown.addActionListener(e -> fillTable3());
 
-        CurriculumManagement curriculum = new CurriculumManagement();
 
-        curriculum.reset();
-        curriculum.fillCurriculum();
 
         ArrayList<Course> list = curriculum.getCurriculum();
         ArrayList<Course> filtered = new ArrayList<>();
@@ -453,9 +445,6 @@ public class CurriculumGui extends JFrame {
 
     private void saveGrades(JTable courseTable) {
         int rowCount = courseTable.getRowCount();
-        CurriculumManagement curriculum = new CurriculumManagement();
-        curriculum.reset();
-        curriculum.fillCurriculum();
 
         ArrayList<Course> courses = curriculum.getCurriculum();
 
@@ -548,10 +537,6 @@ public class CurriculumGui extends JFrame {
 
         eightDropdown.addActionListener(e -> fillTable4());
 
-        CurriculumManagement curriculum = new CurriculumManagement();
-
-        curriculum.reset();
-        curriculum.fillCurriculum();
 
         ArrayList<Course> list = curriculum.getCurriculum();
         ArrayList<Course> filtered = new ArrayList<>();
@@ -633,8 +618,6 @@ public class CurriculumGui extends JFrame {
             }
             courseDetails.add(details);
         }
-        CurriculumManagement curriculum = new CurriculumManagement();
-
 
         int year = getYear((String) sevenDropdown.getSelectedItem());
         String semester = (String) eightDropdown.getSelectedItem();
