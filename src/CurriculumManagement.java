@@ -148,16 +148,31 @@ public class CurriculumManagement implements CurriculumManager{
     }
 
     public void reset() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Original Curriculum.txt"));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("Curriculum.txt")))  {
+
+            String line;
+            while ((line = reader.readLine()) != null){
+                writer.write(line + "\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         courses.clear();
+        fillCurriculum();
     }
 
 }
 
-/**
- * user defined exception
- */
-class ValueOutOfRangeException extends Exception{
-    public ValueOutOfRangeException(){
-        super();
-    }
-}
+
+
+
+
+        /**
+         * user defined exception
+         */
+        class ValueOutOfRangeException extends Exception{
+            public ValueOutOfRangeException(){
+                super();
+            }
+        }

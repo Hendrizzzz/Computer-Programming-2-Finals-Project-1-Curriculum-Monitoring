@@ -68,7 +68,9 @@ public class CurriculumGui extends JFrame {
                 "2. Show subjects with grades for each term<br><br>" +
                 "3. Enter grades for subjects recently finished<br><br>" +
                 "4. Edit a course<br><br>" +
-                "5. Save and Quit<br><br></html>");
+                "5. Calculate GPA<br><br>" +
+                "6. Reset<br><br>" +
+                "7. Save and Quit<br><br></html>");
         menuChoiceLabel.setFont(font2);
         menuPanel.add(menuChoiceLabel, menuLayout);
 
@@ -83,7 +85,7 @@ public class CurriculumGui extends JFrame {
             String input = textField.getText();
             if (input.matches("\\d{1,5}")) {
                 int number = Integer.parseInt(input);
-                if (number > 5) {
+                if (number > 7) {
                     JOptionPane.showMessageDialog(this, "The number must be from 1 to 5");
                 } else {
                     switch (number) {
@@ -100,6 +102,12 @@ public class CurriculumGui extends JFrame {
                             choiceFour();
                             break;
                         case 5:
+                            calculateGPA();
+                        case 6:
+                            curriculum.reset();
+                            JOptionPane.showMessageDialog(null, "The Curriculum has been reset", "Reset", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        case 7:
                             curriculum.saveCurriculum();
                             System.exit(0);
                             break;
@@ -111,9 +119,6 @@ public class CurriculumGui extends JFrame {
             textField.setText("");
         });
     }
-
-
-
 
 
 
@@ -333,7 +338,7 @@ public class CurriculumGui extends JFrame {
         comboBoxPanel3.setBorder(new EmptyBorder(20, 0, 0, 0));
         setComboBoxPanel3();
 
-        JLabel enterLabel = new JLabel("Press 'Enter' after each grade input to save.");
+        JLabel enterLabel = new JLabel("Press 'Enter' after each grade input and Click 'Save' per term to save.");
         enterLabel.setFont(font2);
 
         JPanel enterLabelPanel = new JPanel();
@@ -497,7 +502,7 @@ public class CurriculumGui extends JFrame {
         comboBoxPanel4.setBorder(new EmptyBorder(20, 0, 0, 0));
         setComboBoxPanel4();
 
-        JLabel enterLabel = new JLabel("Press 'Enter' after each grade input to save.");
+        JLabel enterLabel = new JLabel("Press 'Enter' after input and click 'Save' per term to save.");
         enterLabel.setFont(font2);
 
         JPanel enterLabelPanel = new JPanel();
@@ -656,6 +661,11 @@ public class CurriculumGui extends JFrame {
             case "3rd Year" -> 3;
             default -> 4;
         };
+    }
+
+
+
+    private void calculateGPA() {
     }
 
 }

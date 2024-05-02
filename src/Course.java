@@ -73,7 +73,6 @@ public class Course {
     }
 
     public void setGrade(byte grade) {
-        System.out.println("Change of grade success");
         this.grade = grade;
     }
 }
