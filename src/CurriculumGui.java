@@ -400,8 +400,6 @@ public class CurriculumGui extends JFrame {
 
         sixDropdown.addActionListener(e -> fillTable3());
 
-
-
         ArrayList<Course> list = curriculum.getCurriculum();
         ArrayList<Course> filtered = new ArrayList<>();
 
@@ -462,25 +460,30 @@ public class CurriculumGui extends JFrame {
     private void saveGrades(JTable courseTable) {
         int rowCount = courseTable.getRowCount();
 
-        ArrayList<Course> courses = curriculum.getCurriculum();
+        ArrayList<Byte> grades = new ArrayList<>(10);
 
         for (int i = 0; i < rowCount; i++) {
             Object value = courseTable.getValueAt(i, 3);
-            if (value.toString().isEmpty()){
-                courses.get(i).setGrade((byte) 0);
-            } else if (!value.toString().equalsIgnoreCase("Not Yet Taken")) {
+            if (value.toString().isEmpty() || value.toString().equalsIgnoreCase("Not Yet Taken")){
+                grades.add((byte) 0);
+            } else {
                 try {
                     byte grade = Byte.parseByte(value.toString());
-                    if (grade < 65 || grade > 99) {
-                        JOptionPane.showMessageDialog(null, "Grade value at row " + (i + 1) + " should be between 65 and 99.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    courses.get(i).setGrade(grade);
+                    grades.add(grade);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Invalid grade value at row " + (i + 1), "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
+        }
+
+        int year = getYear((String) fiveDropdown.getSelectedItem());
+        String term = (String) sixDropdown.getSelectedItem();
+        try {
+            curriculum.editGrade(grades, year, term);
+        } catch (ValueOutOfRangeException e) {
+            JOptionPane.showMessageDialog(null, "Grade should be between 65 and 99.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         curriculum.saveCurriculum();

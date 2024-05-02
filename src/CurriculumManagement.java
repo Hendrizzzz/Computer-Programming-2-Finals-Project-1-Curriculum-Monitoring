@@ -67,11 +67,15 @@ public class CurriculumManagement implements CurriculumManager{
         int count = 0;
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
-
-                if (notValid(Float.valueOf(grades.get(count)), (byte) 65, (byte) 99)){
+                byte grade = grades.get(count);
+                if (grade == 0){
+                    course.setGrade((byte) 0);
+                } else if (notValid((float) grade, (byte) 65, (byte) 99)){
                     throw new ValueOutOfRangeException();
+                } else {
+                    course.setGrade(grade);
                 }
-                course.setGrade(grades.get(count++));
+                count++;
             }
         }
     }
