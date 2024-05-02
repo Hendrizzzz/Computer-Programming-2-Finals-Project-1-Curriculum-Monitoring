@@ -336,17 +336,28 @@ public class CurriculumGui extends JFrame {
         comboBoxPanel3.setBorder(new EmptyBorder(20, 0, 0, 0));
         setComboBoxPanel3();
 
+        JLabel enterLabel = new JLabel("Press 'Enter' after each grade input to save.");
+        enterLabel.setFont(font2);
+
+        JPanel enterLabelPanel = new JPanel();
+        enterLabelPanel.add(enterLabel);
+
         JScrollPane scrollPane = new JScrollPane(courseTable);
         scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
-
 
         fillTable3();
 
         savePanel = new JPanel();
         setSavePanel(savePanel);
 
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(enterLabelPanel);
+        centerPanel.add(scrollPane);
+
+        choiceThreeFrame.setLayout(new BorderLayout());
         choiceThreeFrame.add(comboBoxPanel3, BorderLayout.NORTH);
-        choiceThreeFrame.add(scrollPane);
+        choiceThreeFrame.add(centerPanel, BorderLayout.CENTER);
         choiceThreeFrame.add(savePanel, BorderLayout.SOUTH);
         choiceThreeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         choiceThreeFrame.setVisible(true);
@@ -493,6 +504,12 @@ public class CurriculumGui extends JFrame {
         comboBoxPanel4.setBorder(new EmptyBorder(20, 0, 0, 0));
         setComboBoxPanel4();
 
+        JLabel enterLabel = new JLabel("Press 'Enter' after each grade input to save.");
+        enterLabel.setFont(font2);
+
+        JPanel enterLabelPanel = new JPanel();
+        enterLabelPanel.add(enterLabel);
+
         JScrollPane scrollPane = new JScrollPane(courseTable);
         scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -502,8 +519,14 @@ public class CurriculumGui extends JFrame {
         savePanel2 = new JPanel();
         setSavePanel2(savePanel2);
 
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(enterLabelPanel);
+        centerPanel.add(scrollPane);
+
+        choiceFourFrame.setLayout(new BorderLayout());
         choiceFourFrame.add(comboBoxPanel4, BorderLayout.NORTH);
-        choiceFourFrame.add(scrollPane);
+        choiceFourFrame.add(centerPanel, BorderLayout.CENTER);
         choiceFourFrame.add(savePanel2, BorderLayout.SOUTH);
         choiceFourFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         choiceFourFrame.setVisible(true);
