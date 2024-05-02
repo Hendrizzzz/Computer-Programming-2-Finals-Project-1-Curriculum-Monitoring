@@ -14,7 +14,11 @@ public class CurriculumManagement implements CurriculumManager{
         courses.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
+
             while ((line = reader.readLine()) != null) {
+
+            while ((line = reader.readLine()) != null){
+
                 String[] courseText = line.split(",(?!\\s)");
                 Course course = readCourse(courseText);
 
@@ -81,10 +85,19 @@ public class CurriculumManagement implements CurriculumManager{
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
 
+
                 if (notValid(Float.valueOf(grades.get(count)), (byte) 65, (byte) 99)){
+
+                byte grade = grades.get(count);
+                if (grade == 0){
+                    course.setGrade((byte) 0);
+                } else if (notValid((float) grade, (byte) 65, (byte) 99)){
+
                     throw new ValueOutOfRangeException();
+                } else {
+                    course.setGrade(grade);
                 }
-                course.setGrade(grades.get(count++));
+                count++;
             }
         }
     }
@@ -160,16 +173,35 @@ public class CurriculumManagement implements CurriculumManager{
     }
 
     public void reset() {
+
         courses.clear();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("Original Curriculum.txt"));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("Curriculum.txt")))  {
+
+            String line;
+            while ((line = reader.readLine()) != null){
+                writer.write(line + "\n");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        courses.clear();
+        fillCurriculum();
+
     }
 
 }
 
-/**
- * user defined exception
- */
-class ValueOutOfRangeException extends Exception{
-    public ValueOutOfRangeException(){
-        super();
-    }
-}
+
+
+
+
+        /**
+         * user defined exception
+         */
+        class ValueOutOfRangeException extends Exception{
+            public ValueOutOfRangeException(){
+                super();
+            }
+        }

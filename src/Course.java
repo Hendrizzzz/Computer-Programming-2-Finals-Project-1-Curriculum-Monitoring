@@ -64,7 +64,7 @@ public class Course {
         return units;
     }
 
-    public void setUnits(byte units) {
+    public void setUnits(float units) {
         this.units = units;
     }
 
