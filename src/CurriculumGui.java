@@ -1,170 +1,111 @@
 import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.lang.reflect.Array;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CurriculumGui extends JFrame {
-    private JPanel menuPanel, comboBoxPanel;
-    private JPanel displayCurriculum;
-    private JTextArea displayArea;
+public class CurriculumGUI {
+    private JFrame frame;
+    private JComboBox<String> yearDropdown, termDropdown;
+    private JButton fillButton, saveButton;
+    private JTable courseTable;
+    private DefaultTableModel model;
+    private CurriculumManager curriculumManager;
 
-    private ActionListener dropDownHandler1, dropDownHandler2;
-    private JComboBox<String> oneDropdown, twoDropdown;
+    public CurriculumGUI(CurriculumManager curriculumManager) {
+        this.curriculumManager = curriculumManager;
 
+        frame = new JFrame("Curriculum Monitoring");
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    private static final Font font1 = new Font("Arial", Font.BOLD, 20);
-    private static final Font font2 = new Font("Times New Roman", Font.BOLD, 15);
+        // Center the frame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int xPos = (screenSize.width - frame.getWidth()) / 2;
+        int yPos = (screenSize.height - frame.getHeight()) / 2;
+        frame.setLocation(xPos, yPos);
 
-    public static void main(String[] args) {
-        new CurriculumGui().CurriculumGUI();
-    }
+        // Create year and term dropdowns
+        yearDropdown = new JComboBox<>(new String[]{"1", "2", "3", "4"});
+        termDropdown = new JComboBox<>(new String[]{"First Sem", "Second Sem", "Short Term"});
 
-    public void CurriculumGUI(){
-        setTitle("Curriculum Monitoring");
-        setSize(400,400);
-        setResizable(false);
-
-
-        menuPanel = new JPanel();
-        setMenuPanel();
-
-
-        add(menuPanel, BorderLayout.NORTH);
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
-    }
-
-    private void setMenuPanel() {
-        menuPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints menuLayout = new GridBagConstraints();
-        menuLayout.gridx = 0;
-        menuLayout.gridy =0;
-        menuLayout.anchor = GridBagConstraints.CENTER;
-
-        JLabel menuHeadLabel = new JLabel("<html><div style='text-align: center;'>Personal Checklist Monitoring App</div></html>");
-        menuHeadLabel.setFont(font1);
-        menuPanel.add(menuHeadLabel, menuLayout);
-
-
-        menuLayout.gridy = 1;
-        menuLayout.insets = new Insets(10,10,10,10);
-        JLabel menuChoiceLabel = new JLabel("<html><br>1. Show subjects for each school term<br><br>" +
-                "2. Show subjects with grades for each term<br><br>" +
-                "3. Enter grades for subjects recently finished<br><br>" +
-                "4. Edit a course<br><br>" +
-                "5. Quit<br><br></html>");
-        menuChoiceLabel.setFont(font2);
-        menuPanel.add(menuChoiceLabel, menuLayout);
-
-        //textField
-        menuLayout.gridy = 2;
-        menuLayout.fill = GridBagConstraints.HORIZONTAL;
-        JTextField textField = new JTextField();
-        textField.setFont(font2);
-        menuPanel.add(textField, menuLayout);
-
-        textField.addActionListener(e ->{
-            String input = textField.getText();
-            if (input.matches("\\d{1,5}")) {
-                int number = Integer.parseInt(input);
-                if (number > 5) {
-                    JOptionPane.showMessageDialog(this, "The number must be from 1 to 5");
-                } else {
-                    switch (number) {
-                        case 1:
-                            choiceOne();
-                            break;
-                        case 2:
-                            System.out.println("HELLO MIGGA");
-                            break;
-                        case 3:
-                            //Action
-                            break;
-                        case 4:
-                            //Action
-                            break;
-                        case 5:
-                            System.exit(0);
-                            break;
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "You entered a valid Integer", "Error", JOptionPane.ERROR_MESSAGE);
+        // Create buttons for filling and saving curriculum
+        fillButton = new JButton("Fill Curriculum");
+        fillButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fillCurriculum();
             }
-            textField.setText("");
         });
+
+        saveButton = new JButton("Save Curriculum");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveCurriculum();
+            }
+        });
+
+        // Create the course table
+        courseTable = new JTable();
+        JScrollPane scrollPane = new JScrollPane(courseTable);
+
+        // Create the button panel
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(fillButton);
+        buttonPanel.add(saveButton);
+
+        // Create the combo box panel
+        JPanel comboBoxPanel = new JPanel();
+        comboBoxPanel.setLayout(new GridLayout(1, 2));
+        comboBoxPanel.add(yearDropdown);
+        comboBoxPanel.add(termDropdown);
+
+        // Add panels to the frame
+        frame.add(comboBoxPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Show the frame
+        frame.setVisible(true);
     }
 
-
-    private void choiceOne() {
-        JFrame choiceOneFrame = new JFrame("Curriculum");
-        choiceOneFrame.setSize(1000, 500);
-
-        comboBoxPanel = new JPanel();
-        setComboBoxPanel();
-
-
-        displayCurriculum = new JPanel();
-
-        setDisplayCurriculum();
-
-        choiceOneFrame.add(comboBoxPanel, BorderLayout.NORTH);
-        choiceOneFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        choiceOneFrame.setVisible(true);
+    private void fillCurriculum() {
+        String selectedYear = (String) yearDropdown.getSelectedItem();
+        String selectedTerm = (String) termDropdown.getSelectedItem();
+        curriculumManager.fillCurriculum(selectedYear, selectedTerm);
+        displayCurriculum();
+    }
+    private void saveCurriculum() {
+        curriculumManager.saveCurriculum();
     }
 
-    private void setComboBoxPanel() {
+    public void displayCurriculum() {
+        ArrayList<Course> curriculum = curriculumManager.getCurriculum();
+        Object[][] data = new Object[curriculum.size()][6];
 
-        String[] option1 = {"1st Year","2nd Year","3rd Year","4th Year"};
-        oneDropdown = new JComboBox<>(option1);
-        oneDropdown.setPreferredSize(new Dimension(150,40));
-        oneDropdown.setFont(font2);
-
-        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
-        twoDropdown = new JComboBox<>(option2);
-        oneDropdown.setPreferredSize(new Dimension(150,40));
-        oneDropdown.setFont(font2);
-
-        comboBoxPanel = new JPanel();
-        comboBoxPanel.add(oneDropdown);
-        comboBoxPanel.add(twoDropdown);
-    }
-
-
-
-    //PROBLEM
-    private void setDisplayCurriculum() {
-        CurriculumManagement curriculum = new CurriculumManagement();
-        curriculum.fillCurriculum();
-        ArrayList<Course> courses = curriculum.getCurriculum();
-
-        StringBuilder formattedText = new StringBuilder();
-
-        formattedText.append("------------------------------------------------------------------------------------------------\n");
-        formattedText.append(String.format("%-20s%-20s%-40s%-10s%-10s\n", "Year", "Term", "Course No. Descriptive title", "Units", "Grade"));
-        formattedText.append("------------------------------------------------------------------------------------------------\n");
-
-        //course details
-        for (Course course : courses) {
-            formattedText.append(String.format("%-20s%-20s%-40s%-10.1s%-10s\n",
-                    course.getYear(),
-                    course.getTerm(),
-                    course.getCourseNumber() + " " + course.getDescriptiveTitle(),
-                    course.getUnits(),
-                    course.getGrade() == 0 ? "Not Yet Taken" : String.valueOf(course.getGrade())));
+        for (int i = 0; i < curriculum.size(); i++) {
+            Course course = curriculum.get(i);
+            data[i][0] = course.getYear();
+            data[i][1] = course.getTerm();
+            data[i][2] = course.getCourseNumber();
+            data[i][3] = course.getDescriptiveTitle();
+            data[i][4] = course.getUnits();
+            data[i][5] = course.getGrade() == 0 ? "Not Yet Taken" : course.getGrade();
         }
-        displayArea = new JTextArea(formattedText.toString());
-        displayArea.setFont(font2);
-        displayArea.setEditable(false);
 
-        displayCurriculum.removeAll();
-
-        displayCurriculum.revalidate();
-        displayCurriculum.repaint();
+        String[] columnNames = {"Year", "Term", "Course Number", "Course Title", "Units", "Grade"};
+        model = new DefaultTableModel(data, columnNames);
+        courseTable.setModel(model);
     }
-
-
+    public static void main(String[] args) {
+        CurriculumManager curriculumManager = new CurriculumManagement();
+        SwingUtilities.invokeLater(() -> new CurriculumGUI(curriculumManager));
+    }
 
 }
+
+
+
+
