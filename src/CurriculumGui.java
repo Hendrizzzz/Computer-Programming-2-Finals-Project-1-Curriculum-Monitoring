@@ -460,7 +460,9 @@ public class CurriculumGui extends JFrame {
 
         for (int i = 0; i < rowCount; i++) {
             Object value = courseTable.getValueAt(i, 3);
-            if (value!= null &&!value.toString().isEmpty() &&!value.toString().equalsIgnoreCase("Not Yet Taken")) {
+            if (value.toString().isEmpty()){
+                courses.get(i).setGrade((byte) 0);
+            } else if (!value.toString().equalsIgnoreCase("Not Yet Taken")) {
                 try {
                     byte grade = Byte.parseByte(value.toString());
                     if (grade < 65 || grade > 99) {
@@ -581,9 +583,9 @@ public class CurriculumGui extends JFrame {
 
         // allow only grade column to be edited
         model = new DefaultTableModel(data, column) {
-          public boolean isCellEditable(int row, int column) {
-              return column == 0 || column == 1 || column == 2;
-          }
+            public boolean isCellEditable(int row, int column) {
+                return column == 0 || column == 1 || column == 2;
+            }
         };
         courseTable.setModel(model);
 
