@@ -6,25 +6,43 @@ public class CurriculumManagement implements CurriculumManager{
     private static final String fileName = "Curriculum.txt";
     private static final ArrayList<Course> courses = new ArrayList<>();
 
-
     /**
      * Fills the Arraylist with Courses
      */
     @Override
-    public void fillCurriculum() {
+    public void fillCurriculum(String year, String term) {
+        courses.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
+
+            while ((line = reader.readLine()) != null) {
+
             while ((line = reader.readLine()) != null){
+
                 String[] courseText = line.split(",(?!\\s)");
                 Course course = readCourse(courseText);
-                courses.add(course);
+
+                // Filter out courses based on selected year and term
+                if (Byte.toString(course.getYear()).equals(year) && course.getTerm().equals(term)) {
+                    courses.add(course);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // Display the filtered curriculum
+        displayCurriculum(courses);
+    }
+
+    private void displayCurriculum(ArrayList<Course> courses) {
     }
 
 
+    @Override
+    public void fillCurriculum() {
+
+    }
     /**
      * Reads the courses details in array of String and returns an object of Course
      * @param courseText the details of the course (units, title, course no.)
@@ -54,7 +72,6 @@ public class CurriculumManagement implements CurriculumManager{
         return courses;
     }
 
-
     /**
      * edits the grades of the courses of a specific term of a year
      * @param grades the ArrayList of grades to be set
@@ -67,10 +84,15 @@ public class CurriculumManagement implements CurriculumManager{
         int count = 0;
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
+
+
+                if (notValid(Float.valueOf(grades.get(count)), (byte) 65, (byte) 99)){
+
                 byte grade = grades.get(count);
                 if (grade == 0){
                     course.setGrade((byte) 0);
                 } else if (notValid((float) grade, (byte) 65, (byte) 99)){
+
                     throw new ValueOutOfRangeException();
                 } else {
                     course.setGrade(grade);
@@ -131,7 +153,6 @@ public class CurriculumManagement implements CurriculumManager{
         return score/units;
     }
 
-
     /**
      * Saves the changes made of the user in his Curriculum monitoring
      */
@@ -152,6 +173,9 @@ public class CurriculumManagement implements CurriculumManager{
     }
 
     public void reset() {
+
+        courses.clear();
+
         try (BufferedReader reader = new BufferedReader(new FileReader("Original Curriculum.txt"));
              BufferedWriter writer = new BufferedWriter(new FileWriter("Curriculum.txt")))  {
 
@@ -164,6 +188,7 @@ public class CurriculumManagement implements CurriculumManager{
         }
         courses.clear();
         fillCurriculum();
+
     }
 
 }
