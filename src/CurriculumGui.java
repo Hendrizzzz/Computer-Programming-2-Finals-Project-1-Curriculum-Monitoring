@@ -447,32 +447,32 @@ public class CurriculumGui extends JFrame {
 
     private void saveGrades(JTable courseTable) {
         int rowCount = courseTable.getRowCount();
-        int colCount = courseTable.getColumnCount();
+        CurriculumManagement curriculum = new CurriculumManagement();
+        curriculum.reset();
+        curriculum.fillCurriculum();
+
+        ArrayList<Course> courses = curriculum.getCurriculum();
+
         for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < colCount; j++) {
-                Object value = courseTable.getValueAt(i, j);
-                if (j == 5) {
-                    if (value != null && !value.toString().isEmpty() && !value.toString().equalsIgnoreCase("Not Yet Taken")) {
-                        try {
-                            byte grade = Byte.parseByte(value.toString());
-                            if (grade < 65 || grade > 99) {
-                                JOptionPane.showMessageDialog(null, "Grade value at row " + (i + 1) + " should be between 65 and 99.", "Error", JOptionPane.ERROR_MESSAGE);
-                                return;
-                            }
-                            filtered.get(i).setGrade(grade);
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "Invalid grade value at row " + (i + 1), "Error", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
+            Object value = courseTable.getValueAt(i, 3);
+            if (value!= null &&!value.toString().isEmpty() &&!value.toString().equalsIgnoreCase("Not Yet Taken")) {
+                try {
+                    byte grade = Byte.parseByte(value.toString());
+                    if (grade < 65 || grade > 99) {
+                        JOptionPane.showMessageDialog(null, "Grade value at row " + (i + 1) + " should be between 65 and 99.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
+                    courses.get(i).setGrade(grade);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid grade value at row " + (i + 1), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
             }
         }
-        CurriculumManagement curriculum = new CurriculumManagement();
+
         curriculum.saveCurriculum();
         JOptionPane.showMessageDialog(null, "Grades saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
-
 
 
 
