@@ -81,7 +81,7 @@ public class CurriculumGUI {
         curriculumManager.saveCurriculum();
     }
 
-    public void displayCurriculum() {
+    public void displayCurriculum() 
         ArrayList<Course> curriculum = curriculumManager.getCurriculum();
         Object[][] data = new Object[curriculum.size()][6];
 
@@ -105,7 +105,3 @@ public class CurriculumGUI {
     }
 
 }
-
-
-
-
