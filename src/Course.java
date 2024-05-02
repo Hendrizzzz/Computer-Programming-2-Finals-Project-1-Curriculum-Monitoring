@@ -64,7 +64,7 @@ public class Course {
         return units;
     }
 
-    public void setUnits(byte units) {
+    public void setUnits(float units) {
         this.units = units;
     }
 
@@ -73,6 +73,7 @@ public class Course {
     }
 
     public void setGrade(byte grade) {
+        System.out.println("Change of grade success");
         this.grade = grade;
     }
 }

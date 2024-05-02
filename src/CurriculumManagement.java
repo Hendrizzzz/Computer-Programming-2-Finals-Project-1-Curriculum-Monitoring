@@ -68,7 +68,7 @@ public class CurriculumManagement implements CurriculumManager{
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
 
-                if (notValid(grades.get(count), (byte) 65, (byte) 99)){
+                if (notValid(Float.valueOf(grades.get(count)), (byte) 65, (byte) 99)){
                     throw new ValueOutOfRangeException();
                 }
                 course.setGrade(grades.get(count++));
@@ -82,7 +82,7 @@ public class CurriculumManagement implements CurriculumManager{
      * @param maximum highest number allowed
      * @return true if the number is valid, otherwise false.
      */
-    private boolean notValid(Byte number, byte minimum, byte maximum) {
+    private boolean notValid(Float number, byte minimum, byte maximum) {
         return number > maximum || number < minimum;
     }
 
@@ -98,12 +98,12 @@ public class CurriculumManagement implements CurriculumManager{
         int count = 0;
         for (Course course : courses){
             if (course.getYear() == year && course.getTerm().equals(term)){
-                if (notValid(Byte.parseByte(courseDetails.get(count)[2]), (byte) 1, (byte) 6)){
+                if (notValid(Float.parseFloat(courseDetails.get(count)[2]), (byte) 1, (byte) 6)){
                     throw new ValueOutOfRangeException();
                 }
                 course.setCourseNumber(courseDetails.get(count)[0]);
                 course.setDescriptiveTitle(courseDetails.get(count)[1]);
-                course.setUnits(Byte.parseByte(courseDetails.get(count++)[2]));
+                course.setUnits(Float.parseFloat(courseDetails.get(count++)[2]));
             }
         }
     }
@@ -139,7 +139,7 @@ public class CurriculumManagement implements CurriculumManager{
                 if (course.getGrade() == 0){
                     grade = "Not Yet Taken";
                 }
-                writer.write(course.getYear() + "," + course.getTerm() + "," + course.getCourseNumber() +
+                writer.write(course.getYear() + "," + course.getTerm() + "," + course.getCourseNumber() + "," +
                         course.getDescriptiveTitle() + "," + course.getUnits() + "," + grade + "\n");
             }
         } catch (IOException e) {
