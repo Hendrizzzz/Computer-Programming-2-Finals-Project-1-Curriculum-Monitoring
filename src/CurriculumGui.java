@@ -3,8 +3,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -67,7 +65,7 @@ public class CurriculumGui extends JFrame {
                 "2. Show subjects with grades for each term<br><br>" +
                 "3. Enter grades for subjects recently finished<br><br>" +
                 "4. Edit a course<br><br>" +
-                "5. Quit<br><br></html>");
+                "5. Save and Quit<br><br></html>");
         menuChoiceLabel.setFont(font2);
         menuPanel.add(menuChoiceLabel, menuLayout);
 
@@ -180,13 +178,13 @@ public class CurriculumGui extends JFrame {
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(700);
         columnModel.getColumn(2).setPreferredWidth(40);
-
+        filtered.clear();
     }
 
     private void setComboBoxPanel() {
 
         String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
-        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Semester"};
 
         oneDropdown = new JComboBox<>(option1);
         oneDropdown.setPreferredSize(new Dimension(150, 40));
@@ -244,7 +242,7 @@ public class CurriculumGui extends JFrame {
     private void setComboBoxPanel2() {
 
         String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
-        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Semester"};
 
         threeDropdown = new JComboBox<>(option1);
         threeDropdown.setPreferredSize(new Dimension(150, 40));
@@ -308,6 +306,9 @@ public class CurriculumGui extends JFrame {
             data[i][1] = course.getDescriptiveTitle();
             data[i][2] = "" + course.getUnits();
             data[i][3] = "" + course.getGrade();
+            if (data[i][3].equals("0")){
+                data[i][3] = "Not Yet Taken";
+            }
         }
 
         courseTable.setModel(new DefaultTableModel(data, column));
@@ -316,7 +317,7 @@ public class CurriculumGui extends JFrame {
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(700);
         columnModel.getColumn(2).setPreferredWidth(40);
-
+        filtered.clear();
     }
 
 
@@ -354,7 +355,7 @@ public class CurriculumGui extends JFrame {
     private void setComboBoxPanel3() {
 
         String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
-        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Semester"};
 
         fiveDropdown = new JComboBox<>(option1);
         fiveDropdown.setPreferredSize(new Dimension(150, 40));
@@ -418,6 +419,9 @@ public class CurriculumGui extends JFrame {
             data[i][1] = course.getDescriptiveTitle();
             data[i][2] = "" + course.getUnits();
             data[i][3] = "" + course.getGrade();
+            if (data[i][3].equals("0")){
+                data[i][3] = "Not Yet Taken";
+            }
         }
 
         // allow only grade column to be edited
@@ -433,6 +437,7 @@ public class CurriculumGui extends JFrame {
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(700);
         columnModel.getColumn(2).setPreferredWidth(40);
+        filtered.clear();
     }
 
     private void setSavePanel(JPanel panel) {
@@ -507,7 +512,7 @@ public class CurriculumGui extends JFrame {
     private void setComboBoxPanel4() {
 
         String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
-        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Semester"};
 
         sevenDropdown = new JComboBox<>(option1);
         sevenDropdown.setPreferredSize(new Dimension(150, 40));
@@ -522,16 +527,16 @@ public class CurriculumGui extends JFrame {
             if (selected.equals("4th Year")) {
                 String[] newOption = {"First Semester", "Second Semester"};
                 eightDropdown.setModel(new DefaultComboBoxModel<>(newOption));
-                fillTable3();
+                fillTable4();
 
             } else if (selected.equals("1st Year") || selected.equals("2nd Year") || selected.equals("3rd Year")) {
-                sixDropdown.setModel(new DefaultComboBoxModel<>(option2));
-                fillTable3();
+                eightDropdown.setModel(new DefaultComboBoxModel<>(option2));
+                fillTable4();
             }
         });
 
-        comboBoxPanel3.add(sevenDropdown);
-        comboBoxPanel3.add(eightDropdown);
+        comboBoxPanel4.add(sevenDropdown);
+        comboBoxPanel4.add(eightDropdown);
 
     }
 
@@ -590,7 +595,13 @@ public class CurriculumGui extends JFrame {
     private void setSavePanel2(JPanel panel) {
         saveButton2 = new JButton("Save");
         saveButton2.addActionListener(e ->
-                saveCourse(courseTable));
+        {
+            try {
+                saveCourse(courseTable);
+            } catch (ValueOutOfRangeException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
 
         panel.add(saveButton2);
@@ -624,7 +635,17 @@ public class CurriculumGui extends JFrame {
         //fixed
         curriculum.saveCurriculum();
 
+
         JOptionPane.showMessageDialog(null, "Changes saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private int getYear(String selectedItem) {
+        return switch (selectedItem){
+            case "1st Year" -> 1;
+            case "2nd Year" -> 2;
+            case "3rd Year" -> 3;
+            default -> 4;
+        };
     }
 
 }
