@@ -1,16 +1,26 @@
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.awt.event.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CurriculumGui extends JFrame {
-    private JPanel menuPanel, comboBoxPanel;
-    private JPanel displayCurriculum;
-    private JTextArea displayArea;
+    private ArrayList<Course> filtered = new ArrayList<>();
 
-    private ActionListener dropDownHandler1, dropDownHandler2;
-    private JComboBox<String> oneDropdown, twoDropdown;
+    private JPanel menuPanel, comboBoxPanel, comboBoxPanel2, comboBoxPanel3, comboBoxPanel4;
+
+    private JPanel savePanel, savePanel2;
+    private JButton saveButton, saveButton2;
+
+    private JTable courseTable;
+    private DefaultTableModel model;
+
+    private JComboBox<String> oneDropdown, twoDropdown, threeDropdown, fourDropdown, fiveDropdown, sixDropdown, sevenDropdown, eightDropdown;
 
 
     private static final Font font1 = new Font("Arial", Font.BOLD, 20);
@@ -20,9 +30,12 @@ public class CurriculumGui extends JFrame {
         new CurriculumGui().CurriculumGUI();
     }
 
-    public void CurriculumGUI(){
+    public void CurriculumGUI() {
+
+        courseTable = new JTable();
+
         setTitle("Curriculum Monitoring");
-        setSize(400,400);
+        setSize(400, 400);
         setResizable(false);
 
 
@@ -40,7 +53,7 @@ public class CurriculumGui extends JFrame {
         menuPanel = new JPanel(new GridBagLayout());
         GridBagConstraints menuLayout = new GridBagConstraints();
         menuLayout.gridx = 0;
-        menuLayout.gridy =0;
+        menuLayout.gridy = 0;
         menuLayout.anchor = GridBagConstraints.CENTER;
 
         JLabel menuHeadLabel = new JLabel("<html><div style='text-align: center;'>Personal Checklist Monitoring App</div></html>");
@@ -49,7 +62,7 @@ public class CurriculumGui extends JFrame {
 
 
         menuLayout.gridy = 1;
-        menuLayout.insets = new Insets(10,10,10,10);
+        menuLayout.insets = new Insets(10, 10, 10, 10);
         JLabel menuChoiceLabel = new JLabel("<html><br>1. Show subjects for each school term<br><br>" +
                 "2. Show subjects with grades for each term<br><br>" +
                 "3. Enter grades for subjects recently finished<br><br>" +
@@ -65,7 +78,7 @@ public class CurriculumGui extends JFrame {
         textField.setFont(font2);
         menuPanel.add(textField, menuLayout);
 
-        textField.addActionListener(e ->{
+        textField.addActionListener(e -> {
             String input = textField.getText();
             if (input.matches("\\d{1,5}")) {
                 int number = Integer.parseInt(input);
@@ -77,13 +90,13 @@ public class CurriculumGui extends JFrame {
                             choiceOne();
                             break;
                         case 2:
-                            System.out.println("HELLO MIGGA");
+                            choiceTwo();
                             break;
                         case 3:
-                            //Action
+                            choiceThree();
                             break;
                         case 4:
-                            //Action
+                            choiceFour();
                             break;
                         case 5:
                             System.exit(0);
@@ -98,73 +111,517 @@ public class CurriculumGui extends JFrame {
     }
 
 
+
+
+
+
+    //-----------------------------------------------CHOICE ONE---------------------------------------------------------
+
     private void choiceOne() {
         JFrame choiceOneFrame = new JFrame("Curriculum");
         choiceOneFrame.setSize(1000, 500);
 
         comboBoxPanel = new JPanel();
+        comboBoxPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
         setComboBoxPanel();
 
+        JScrollPane scrollPane = new JScrollPane(courseTable);
+        scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        displayCurriculum = new JPanel();
 
-        setDisplayCurriculum();
+        fillTable();
 
         choiceOneFrame.add(comboBoxPanel, BorderLayout.NORTH);
+        choiceOneFrame.add(scrollPane);
         choiceOneFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         choiceOneFrame.setVisible(true);
     }
 
+    private void fillTable() {
+
+        twoDropdown.addActionListener(e -> fillTable());
+
+        CurriculumManagement curriculum = new CurriculumManagement();
+
+        curriculum.reset();
+        curriculum.fillCurriculum();
+
+        ArrayList<Course> list = curriculum.getCurriculum();
+        ArrayList<Course> filtered = new ArrayList<>();
+
+        String selectedYear = (String) oneDropdown.getSelectedItem();
+        String selectedSemester = (String) twoDropdown.getSelectedItem();
+
+        byte yearToInt = 0;
+
+        switch (Objects.requireNonNull(selectedYear)) {
+            case "1st Year" -> yearToInt = 1;
+            case "2nd Year" -> yearToInt = 2;
+            case "3rd Year" -> yearToInt = 3;
+            case "4th Year" -> yearToInt = 4;
+        }
+
+        for (Course course : list)
+            if (course.getYear() == yearToInt && course.getTerm().equals(selectedSemester)) filtered.add(course);
+
+        String[] column = new String[]{"Course No.", "Course Title", "Units"};
+        String[][] data = new String[filtered.size()][3];
+
+        for (int i = 0; i < filtered.size(); i++) {
+            Course course = filtered.get(i);
+            data[i][0] = course.getCourseNumber();
+            data[i][1] = course.getDescriptiveTitle();
+            data[i][2] = "" + course.getUnits();
+        }
+
+        courseTable.setModel(new DefaultTableModel(data, column));
+        courseTable.setEnabled(false);
+        TableColumnModel columnModel = courseTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(700);
+        columnModel.getColumn(2).setPreferredWidth(40);
+
+    }
+
     private void setComboBoxPanel() {
 
-        String[] option1 = {"1st Year","2nd Year","3rd Year","4th Year"};
-        oneDropdown = new JComboBox<>(option1);
-        oneDropdown.setPreferredSize(new Dimension(150,40));
-        oneDropdown.setFont(font2);
-
+        String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
         String[] option2 = {"First Semester", "Second Semester", "Short Term"};
-        twoDropdown = new JComboBox<>(option2);
-        oneDropdown.setPreferredSize(new Dimension(150,40));
+
+        oneDropdown = new JComboBox<>(option1);
+        oneDropdown.setPreferredSize(new Dimension(150, 40));
         oneDropdown.setFont(font2);
 
-        comboBoxPanel = new JPanel();
+        twoDropdown = new JComboBox<>(option2);
+        twoDropdown.setPreferredSize(new Dimension(150, 40));
+        twoDropdown.setFont(font2);
+
+        oneDropdown.addActionListener(e -> {
+            String selected = (String) oneDropdown.getSelectedItem();
+            if (selected.equals("4th Year")) {
+                String[] newOption = {"First Semester", "Second Semester"};
+                twoDropdown.setModel(new DefaultComboBoxModel<>(newOption));
+                fillTable();
+
+            } else if (selected.equals("1st Year") || selected.equals("2nd Year") || selected.equals("3rd Year")) {
+                twoDropdown.setModel(new DefaultComboBoxModel<>(option2));
+                fillTable();
+            }
+        });
+
         comboBoxPanel.add(oneDropdown);
         comboBoxPanel.add(twoDropdown);
+
     }
 
 
 
-    //PROBLEM
-    private void setDisplayCurriculum() {
+
+
+
+    //-----------------------------------------------CHOICE TWO---------------------------------------------------------
+    private void choiceTwo() {
+        JFrame choiceTwoFrame = new JFrame("Curriculum");
+        choiceTwoFrame.setSize(1000, 500);
+
+        comboBoxPanel2 = new JPanel();
+        comboBoxPanel2.setBorder(new EmptyBorder(20, 0, 0, 0));
+        setComboBoxPanel2();
+
+        JScrollPane scrollPane = new JScrollPane(courseTable);
+        scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+
+        fillTable2();
+
+        choiceTwoFrame.add(comboBoxPanel2, BorderLayout.NORTH);
+        choiceTwoFrame.add(scrollPane);
+        choiceTwoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        choiceTwoFrame.setVisible(true);
+    }
+
+
+    private void setComboBoxPanel2() {
+
+        String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+
+        threeDropdown = new JComboBox<>(option1);
+        threeDropdown.setPreferredSize(new Dimension(150, 40));
+        threeDropdown.setFont(font2);
+
+        fourDropdown = new JComboBox<>(option2);
+        fourDropdown.setPreferredSize(new Dimension(150, 40));
+        fourDropdown.setFont(font2);
+
+        threeDropdown.addActionListener(e -> {
+            String selected = (String) threeDropdown.getSelectedItem();
+            if (selected.equals("4th Year")) {
+                String[] newOption = {"First Semester", "Second Semester"};
+                fourDropdown.setModel(new DefaultComboBoxModel<>(newOption));
+                fillTable2();
+
+            } else if (selected.equals("1st Year") || selected.equals("2nd Year") || selected.equals("3rd Year")) {
+                fourDropdown.setModel(new DefaultComboBoxModel<>(option2));
+                fillTable2();
+            }
+        });
+
+        comboBoxPanel2.add(threeDropdown);
+        comboBoxPanel2.add(fourDropdown);
+
+    }
+
+    private void fillTable2() {
+
+        fourDropdown.addActionListener(e -> fillTable2());
+
         CurriculumManagement curriculum = new CurriculumManagement();
+
+        curriculum.reset();
         curriculum.fillCurriculum();
-        ArrayList<Course> courses = curriculum.getCurriculum();
 
-        StringBuilder formattedText = new StringBuilder();
+        ArrayList<Course> list = curriculum.getCurriculum();
+        ArrayList<Course> filtered = new ArrayList<>();
 
-        formattedText.append("------------------------------------------------------------------------------------------------\n");
-        formattedText.append(String.format("%-20s%-20s%-40s%-10s%-10s\n", "Year", "Term", "Course No. Descriptive title", "Units", "Grade"));
-        formattedText.append("------------------------------------------------------------------------------------------------\n");
+        String selectedYear = (String) threeDropdown.getSelectedItem();
+        String selectedSemester = (String) fourDropdown.getSelectedItem();
 
-        //course details
-        for (Course course : courses) {
-            formattedText.append(String.format("%-20s%-20s%-40s%-10.1s%-10s\n",
-                    course.getYear(),
-                    course.getTerm(),
-                    course.getCourseNumber() + " " + course.getDescriptiveTitle(),
-                    course.getUnits(),
-                    course.getGrade() == 0 ? "Not Yet Taken" : String.valueOf(course.getGrade())));
+        byte yearToInt = 0;
+
+        switch (Objects.requireNonNull(selectedYear)) {
+            case "1st Year" -> yearToInt = 1;
+            case "2nd Year" -> yearToInt = 2;
+            case "3rd Year" -> yearToInt = 3;
+            case "4th Year" -> yearToInt = 4;
         }
-        displayArea = new JTextArea(formattedText.toString());
-        displayArea.setFont(font2);
-        displayArea.setEditable(false);
 
-        displayCurriculum.removeAll();
+        for (Course course : list)
+            if (course.getYear() == yearToInt && course.getTerm().equals(selectedSemester)) filtered.add(course);
 
-        displayCurriculum.revalidate();
-        displayCurriculum.repaint();
+        String[] column = new String[]{"Course No.", "Course Title", "Units","Grade"};
+        String[][] data = new String[filtered.size()][4];
+
+        for (int i = 0; i < filtered.size(); i++) {
+            Course course = filtered.get(i);
+            data[i][0] = course.getCourseNumber();
+            data[i][1] = course.getDescriptiveTitle();
+            data[i][2] = "" + course.getUnits();
+            data[i][3] = "" + course.getGrade();
+        }
+
+        courseTable.setModel(new DefaultTableModel(data, column));
+        courseTable.setEnabled(false);
+        TableColumnModel columnModel = courseTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(700);
+        columnModel.getColumn(2).setPreferredWidth(40);
+
     }
 
 
+
+
+
+
+
+
+    //----------------------------------------------CHOICE THREE--------------------------------------------------------
+    private void choiceThree(){
+        JFrame choiceThreeFrame = new JFrame("Curriculum");
+        choiceThreeFrame.setSize(1000, 500);
+
+        comboBoxPanel3 = new JPanel();
+        comboBoxPanel3.setBorder(new EmptyBorder(20, 0, 0, 0));
+        setComboBoxPanel3();
+
+        JScrollPane scrollPane = new JScrollPane(courseTable);
+        scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+
+        fillTable3();
+
+        savePanel = new JPanel();
+        setSavePanel(savePanel);
+
+        choiceThreeFrame.add(comboBoxPanel3, BorderLayout.NORTH);
+        choiceThreeFrame.add(scrollPane);
+        choiceThreeFrame.add(savePanel, BorderLayout.SOUTH);
+        choiceThreeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        choiceThreeFrame.setVisible(true);
+    }
+
+    private void setComboBoxPanel3() {
+
+        String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+
+        fiveDropdown = new JComboBox<>(option1);
+        fiveDropdown.setPreferredSize(new Dimension(150, 40));
+        fiveDropdown.setFont(font2);
+
+        sixDropdown = new JComboBox<>(option2);
+        sixDropdown.setPreferredSize(new Dimension(150, 40));
+        sixDropdown.setFont(font2);
+
+        fiveDropdown.addActionListener(e -> {
+            String selected = (String) fiveDropdown.getSelectedItem();
+            if (selected.equals("4th Year")) {
+                String[] newOption = {"First Semester", "Second Semester"};
+                sixDropdown.setModel(new DefaultComboBoxModel<>(newOption));
+                fillTable3();
+
+            } else if (selected.equals("1st Year") || selected.equals("2nd Year") || selected.equals("3rd Year")) {
+                sixDropdown.setModel(new DefaultComboBoxModel<>(option2));
+                fillTable3();
+            }
+        });
+
+        comboBoxPanel3.add(fiveDropdown);
+        comboBoxPanel3.add(sixDropdown);
+
+    }
+
+    private void fillTable3() {
+
+        sixDropdown.addActionListener(e -> fillTable3());
+
+        CurriculumManagement curriculum = new CurriculumManagement();
+
+        curriculum.reset();
+        curriculum.fillCurriculum();
+
+        ArrayList<Course> list = curriculum.getCurriculum();
+        ArrayList<Course> filtered = new ArrayList<>();
+
+        String selectedYear = (String) fiveDropdown.getSelectedItem();
+        String selectedSemester = (String) sixDropdown.getSelectedItem();
+
+        byte yearToInt = 0;
+
+        switch (Objects.requireNonNull(selectedYear)) {
+            case "1st Year" -> yearToInt = 1;
+            case "2nd Year" -> yearToInt = 2;
+            case "3rd Year" -> yearToInt = 3;
+            case "4th Year" -> yearToInt = 4;
+        }
+
+        for (Course course : list)
+            if (course.getYear() == yearToInt && course.getTerm().equals(selectedSemester)) filtered.add(course);
+
+        String[] column = new String[]{"Course No.", "Course Title", "Units","Grade"};
+        String[][] data = new String[filtered.size()][4];
+
+        for (int i = 0; i < filtered.size(); i++) {
+            Course course = filtered.get(i);
+            data[i][0] = course.getCourseNumber();
+            data[i][1] = course.getDescriptiveTitle();
+            data[i][2] = "" + course.getUnits();
+            data[i][3] = "" + course.getGrade();
+        }
+
+        // allow only grade column to be edited
+        model = new DefaultTableModel(data, column) {
+            public boolean isCellEditable(int row, int column) {
+                return column == 3;
+            }
+        };
+        courseTable.setModel(model);
+
+
+        TableColumnModel columnModel = courseTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(700);
+        columnModel.getColumn(2).setPreferredWidth(40);
+    }
+
+    private void setSavePanel(JPanel panel) {
+        saveButton = new JButton("Save");
+        saveButton.addActionListener(e ->
+                saveGrades(courseTable));
+
+
+        panel.add(saveButton);
+    }
+
+
+    private void saveGrades(JTable courseTable) {
+        int rowCount = courseTable.getRowCount();
+        int colCount = courseTable.getColumnCount();
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < colCount; j++) {
+                Object value = courseTable.getValueAt(i, j);
+                if (j == 5) {
+                    if (value != null && !value.toString().isEmpty() && !value.toString().equalsIgnoreCase("Not Yet Taken")) {
+                        try {
+                            byte grade = Byte.parseByte(value.toString());
+                            if (grade < 65 || grade > 99) {
+                                JOptionPane.showMessageDialog(null, "Grade value at row " + (i + 1) + " should be between 65 and 99.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                            filtered.get(i).setGrade(grade);
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(null, "Invalid grade value at row " + (i + 1), "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        CurriculumManagement curriculum = new CurriculumManagement();
+        curriculum.saveCurriculum();
+        JOptionPane.showMessageDialog(null, "Grades saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
+
+
+
+
+
+    //----------------------------------------------CHOICE FOUR--------------------------------------------------------
+    private void choiceFour(){
+        JFrame choiceFourFrame = new JFrame("Curriculum");
+        choiceFourFrame.setSize(1000, 500);
+
+        comboBoxPanel4 = new JPanel();
+        comboBoxPanel4.setBorder(new EmptyBorder(20, 0, 0, 0));
+        setComboBoxPanel4();
+
+        JScrollPane scrollPane = new JScrollPane(courseTable);
+        scrollPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+
+        fillTable4();
+
+        savePanel2 = new JPanel();
+        setSavePanel2(savePanel2);
+
+        choiceFourFrame.add(comboBoxPanel4, BorderLayout.NORTH);
+        choiceFourFrame.add(scrollPane);
+        choiceFourFrame.add(savePanel2, BorderLayout.SOUTH);
+        choiceFourFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        choiceFourFrame.setVisible(true);
+    }
+
+    private void setComboBoxPanel4() {
+
+        String[] option1 = {"1st Year", "2nd Year", "3rd Year", "4th Year"};
+        String[] option2 = {"First Semester", "Second Semester", "Short Term"};
+
+        sevenDropdown = new JComboBox<>(option1);
+        sevenDropdown.setPreferredSize(new Dimension(150, 40));
+        sevenDropdown.setFont(font2);
+
+        eightDropdown = new JComboBox<>(option2);
+        eightDropdown.setPreferredSize(new Dimension(150, 40));
+        eightDropdown.setFont(font2);
+
+        sevenDropdown.addActionListener(e -> {
+            String selected = (String) sevenDropdown.getSelectedItem();
+            if (selected.equals("4th Year")) {
+                String[] newOption = {"First Semester", "Second Semester"};
+                eightDropdown.setModel(new DefaultComboBoxModel<>(newOption));
+                fillTable3();
+
+            } else if (selected.equals("1st Year") || selected.equals("2nd Year") || selected.equals("3rd Year")) {
+                sixDropdown.setModel(new DefaultComboBoxModel<>(option2));
+                fillTable3();
+            }
+        });
+
+        comboBoxPanel3.add(sevenDropdown);
+        comboBoxPanel3.add(eightDropdown);
+
+    }
+
+    private void fillTable4() {
+
+        eightDropdown.addActionListener(e -> fillTable4());
+
+        CurriculumManagement curriculum = new CurriculumManagement();
+
+        curriculum.reset();
+        curriculum.fillCurriculum();
+
+        ArrayList<Course> list = curriculum.getCurriculum();
+        ArrayList<Course> filtered = new ArrayList<>();
+
+        String selectedYear = (String) sevenDropdown.getSelectedItem();
+        String selectedSemester = (String) eightDropdown.getSelectedItem();
+
+        byte yearToInt = 0;
+
+        switch (Objects.requireNonNull(selectedYear)) {
+            case "1st Year" -> yearToInt = 1;
+            case "2nd Year" -> yearToInt = 2;
+            case "3rd Year" -> yearToInt = 3;
+            case "4th Year" -> yearToInt = 4;
+        }
+
+        for (Course course : list)
+            if (course.getYear() == yearToInt && course.getTerm().equals(selectedSemester)) filtered.add(course);
+
+        String[] column = new String[]{"Course No.", "Course Title", "Units"};
+        String[][] data = new String[filtered.size()][3];
+
+        for (int i = 0; i < filtered.size(); i++) {
+            Course course = filtered.get(i);
+            data[i][0] = course.getCourseNumber();
+            data[i][1] = course.getDescriptiveTitle();
+            data[i][2] = "" + course.getUnits();
+        }
+
+
+        // allow only grade column to be edited
+        model = new DefaultTableModel(data, column) {
+          public boolean isCellEditable(int row, int column) {
+              return column == 0 || column == 1 || column == 2;
+          }
+        };
+        courseTable.setModel(model);
+
+        TableColumnModel columnModel = courseTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(50);
+        columnModel.getColumn(1).setPreferredWidth(700);
+        columnModel.getColumn(2).setPreferredWidth(40);
+    }
+
+    private void setSavePanel2(JPanel panel) {
+        saveButton2 = new JButton("Save");
+        saveButton2.addActionListener(e ->
+                saveCourse(courseTable));
+
+
+        panel.add(saveButton2);
+    }
+
+
+
+    private void saveCourse(JTable table) {
+        int rowCount = table.getRowCount();
+        ArrayList<String[]> courseDetails = new ArrayList<>();
+        for (int i = 0; i < rowCount; i++) {
+            String[] details = new String[3];
+            for (int j = 0; j < 3; j++) {
+                // 0 (course no), 1 (course title), 2 (units)
+                Object value = table.getValueAt(i, j);
+                if (value != null) {
+                    details[j] = value.toString();
+                } else {
+                    // set empty string
+                    details[j] = "";
+                }
+            }
+            courseDetails.add(details);
+        }
+        CurriculumManagement curriculum = new CurriculumManagement();
+
+        //PROBLEM
+        //editCourse method in reference class ... parameter should be (courseNumber, courseTitle, (byte)units) ???
+        curriculum.editCourse(courseDetails);
+
+        JOptionPane.showMessageDialog(null, "Changes saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 }
