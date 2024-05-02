@@ -174,6 +174,7 @@ public class CurriculumGui extends JFrame {
 
         courseTable.setModel(new DefaultTableModel(data, column));
         courseTable.setEnabled(false);
+
         TableColumnModel columnModel = courseTable.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(700);
@@ -313,6 +314,7 @@ public class CurriculumGui extends JFrame {
 
         courseTable.setModel(new DefaultTableModel(data, column));
         courseTable.setEnabled(false);
+
         TableColumnModel columnModel = courseTable.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
         columnModel.getColumn(1).setPreferredWidth(700);
@@ -430,8 +432,9 @@ public class CurriculumGui extends JFrame {
                 return column == 3;
             }
         };
-        courseTable.setModel(model);
 
+        courseTable.setModel(model);
+        courseTable.setEnabled(true);
 
         TableColumnModel columnModel = courseTable.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
@@ -585,7 +588,9 @@ public class CurriculumGui extends JFrame {
                 return column == 0 || column == 1 || column == 2;
             }
         };
+
         courseTable.setModel(model);
+        courseTable.setEnabled(true);
 
         TableColumnModel columnModel = courseTable.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(50);
