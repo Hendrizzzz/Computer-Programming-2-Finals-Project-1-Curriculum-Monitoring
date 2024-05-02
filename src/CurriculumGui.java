@@ -598,7 +598,7 @@ public class CurriculumGui extends JFrame {
 
 
 
-    private void saveCourse(JTable table) {
+    private void saveCourse(JTable table) throws ValueOutOfRangeException {
         int rowCount = table.getRowCount();
         ArrayList<String[]> courseDetails = new ArrayList<>();
         for (int i = 0; i < rowCount; i++) {
@@ -617,9 +617,12 @@ public class CurriculumGui extends JFrame {
         }
         CurriculumManagement curriculum = new CurriculumManagement();
 
-        //PROBLEM
-        //editCourse method in reference class ... parameter should be (courseNumber, courseTitle, (byte)units) ???
-        curriculum.editCourse(courseDetails);
+        int year = getYear((String) sevenDropdown.getSelectedItem());
+        String semester = (String) eightDropdown.getSelectedItem();
+        curriculum.editCourse(courseDetails, year, semester);
+
+        //fixed
+        curriculum.saveCurriculum();
 
         JOptionPane.showMessageDialog(null, "Changes saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
