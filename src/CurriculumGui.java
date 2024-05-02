@@ -484,6 +484,7 @@ public class CurriculumGui extends JFrame {
 
 
 
+
     //----------------------------------------------CHOICE FOUR--------------------------------------------------------
     private void choiceFour(){
         JFrame choiceFourFrame = new JFrame("Curriculum");
@@ -628,13 +629,11 @@ public class CurriculumGui extends JFrame {
         }
         CurriculumManagement curriculum = new CurriculumManagement();
 
+        //PROBLEM
+        //editCourse method in reference class ... parameter should be (courseNumber, courseTitle, (byte)units) ???
         int year = getYear((String) sevenDropdown.getSelectedItem());
         String semester = (String) eightDropdown.getSelectedItem();
         curriculum.editCourse(courseDetails, year, semester);
-
-        //fixed
-        curriculum.saveCurriculum();
-
 
         JOptionPane.showMessageDialog(null, "Changes saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
