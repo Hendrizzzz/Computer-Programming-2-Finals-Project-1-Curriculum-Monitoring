@@ -444,8 +444,6 @@ public class CurriculumGui extends JFrame {
         saveButton = new JButton("Save");
         saveButton.addActionListener(e ->
                 saveGrades(courseTable));
-
-
         panel.add(saveButton);
     }
 
@@ -619,20 +617,20 @@ public class CurriculumGui extends JFrame {
             String[] details = new String[3];
             for (int j = 0; j < 3; j++) {
                 // 0 (course no), 1 (course title), 2 (units)
-                Object value = table.getValueAt(i, j);
-                if (value != null) {
-                    details[j] = value.toString();
+                String value = (String) table.getValueAt(i, j);
+                if (value.isEmpty()) {
+                    // show a JOptionPane with a message of "fill up all the rows" instead and return
+                    JOptionPane.showMessageDialog(null, "You must fill up all the content of the row", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 } else {
-                    // set empty string
-                    details[j] = "";
+                    details[j] = value.toString();
                 }
             }
             courseDetails.add(details);
         }
         CurriculumManagement curriculum = new CurriculumManagement();
 
-        //PROBLEM
-        //editCourse method in reference class ... parameter should be (courseNumber, courseTitle, (byte)units) ???
+
         int year = getYear((String) sevenDropdown.getSelectedItem());
         String semester = (String) eightDropdown.getSelectedItem();
         curriculum.editCourse(courseDetails, year, semester);
