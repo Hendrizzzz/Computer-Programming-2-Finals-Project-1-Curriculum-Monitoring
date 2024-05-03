@@ -24,13 +24,13 @@ This is a Java application designed to help monitor a student's curriculum, incl
 2. Open in IDE: Open the project in your IDE of choice.
 3. Run the Application: Execute the CurriculumGui class to launch the application.
 4. Navigate the Menu: Choose from various options presented in the menu:
-        - Display subjects for each term.
-        - View grades for completed subjects.
-        - Enter grades for recent subjects.
-        - Edit course details.
-        - Calculate GPA.
-        - Reset curriculum.
-        - Save and quit.
+- Display subjects for each term.
+- View grades for completed subjects.
+- Enter grades for recent subjects.
+- Edit course details.
+- Calculate GPA.
+- Reset curriculum.
+- Save and quit.
 
 ## Files
 
