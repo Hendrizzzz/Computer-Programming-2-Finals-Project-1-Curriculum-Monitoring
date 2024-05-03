@@ -1,7 +1,7 @@
-1,First Semester,CS 111,Introduction to Computing,2.0,Not Yet Taken
-1,First Semester,CS 111L,Introduction to Computing (Lab),1.0,Not Yet Taken
-1,First Semester,CS 112,Computer Programming 1,2.0,Not Yet Taken
-1,First Semester,CS 112L,Computer Programming 1 (Lab),1.0,Not Yet Taken
+1,First Semester,CS 111,Introduction to Computing,2.0,99
+1,First Semester,CS 111L,Introduction to Computing (Lab),1.0,91
+1,First Semester,CS 112,Computer Programming 1,2.0,99
+1,First Semester,CS 112L,Computer Programming 1 (Lab),1.0,75
 1,First Semester,CS 113,Discrete Structures,3.0,Not Yet Taken
 1,First Semester,GMATH,Mathematics in the Modern World,3.0,Not Yet Taken
 1,First Semester,GART,Art Appreciation,3.0,Not Yet Taken

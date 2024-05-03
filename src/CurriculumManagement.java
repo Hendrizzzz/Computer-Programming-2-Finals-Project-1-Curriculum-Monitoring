@@ -128,7 +128,9 @@ public class CurriculumManagement implements CurriculumManager{
             score += course.getGrade() * course.getUnits();
             units += course.getUnits();
         }
-        return score/units;
+        double average = score/units;
+        String averageString = String.format("%.3f", average);
+        return Double.parseDouble(averageString);
     }
 
 

@@ -673,6 +673,9 @@ public class CurriculumGui extends JFrame {
 
 
 
+
+
+    //----------------------------------------------CHOICE FIVE--------------------------------------------------------
     private void calculateGPA() {
         JOptionPane.showMessageDialog(null, "Your GPA is " + curriculum.calculateGPA(),  "", JOptionPane.INFORMATION_MESSAGE);
     }
