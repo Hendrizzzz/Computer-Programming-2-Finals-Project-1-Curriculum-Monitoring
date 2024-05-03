@@ -1,7 +1,6 @@
 # Curriculum Monitoring Application
 
-![image](https://github.com/Hendrizzzz/Computer-Programming-2-Finals-Project-1-Curriculum-Monitoring/assets/139997209/debfa911-3467-4547-9f8e-8ab63a7e0aa8)  ![image](https://github.com/Hendrizzzz/Computer-Programming-2-Finals-Project-1-Curriculum-Monitoring/assets/139997209/ee1c4402-7b87-4421-9f54-26e337305653)
-
+![image](https://github.com/Hendrizzzz/Computer-Programming-2-Finals-Project-1-Curriculum-Monitoring/assets/139997209/debfa911-3467-4547-9f8e-8ab63a7e0aa8) 
 
 
 This is a Java application designed to help monitor a student's curriculum, including tracking courses, grades, and calculating GPA.
