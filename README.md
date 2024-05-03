@@ -20,7 +20,7 @@ This is a Java application designed to help monitor a student's curriculum, incl
 
 1. **Clone the Repository**: Clone the repository into your preferred IDE.
    ```bash
-   git clone [repository_link]
+   git clone https://github.com/Hendrizzzz/Computer-Programming-2-Midterm-Group-Project-3-Number-System-Converter-App
 2. Open in IDE: Open the project in your IDE of choice.
 3. Run the Application: Execute the CurriculumGui class to launch the application.
 4. Navigate the Menu: Choose from various options presented in the menu:
