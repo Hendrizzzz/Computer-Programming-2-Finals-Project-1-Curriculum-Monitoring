@@ -15,17 +15,22 @@ This is a Java application designed to help monitor a student's curriculum, incl
 - Reset curriculum to its original state
 - Save and quit
 
+
 ## How to Use
 
-1. Run the `CurriculumGui` class.
-2. Choose from the menu options:
-    - Show subjects for each school term
-    - Show subjects with grades for each term
-    - Enter grades for subjects recently finished
-    - Edit a course
-    - Calculate GPA
-    - Reset curriculum
-    - Save and quit
+1. **Clone the Repository**: Clone the repository into your preferred IDE.
+   ```bash
+   git clone [repository_link]
+2. Open in IDE: Open the project in your IDE of choice.
+3. Run the Application: Execute the CurriculumGui class to launch the application.
+4. Navigate the Menu: Choose from various options presented in the menu:
+        - Display subjects for each term.
+        - View grades for completed subjects.
+        - Enter grades for recent subjects.
+        - Edit course details.
+        - Calculate GPA.
+        - Reset curriculum.
+        - Save and quit.
 
 ## Files
 
