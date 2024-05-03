@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class CurriculumGui extends JFrame {
-    private ArrayList<Course> filtered = new ArrayList<>();
-
     private JPanel menuPanel, comboBoxPanel, comboBoxPanel2, comboBoxPanel3, comboBoxPanel4;
 
     private JPanel savePanel, savePanel2;
@@ -103,6 +101,7 @@ public class CurriculumGui extends JFrame {
                             break;
                         case 5:
                             calculateGPA();
+                            break;
                         case 6:
                             curriculum.reset();
                             JOptionPane.showMessageDialog(null, "The Curriculum has been reset", "Reset", JOptionPane.INFORMATION_MESSAGE);
@@ -652,7 +651,13 @@ public class CurriculumGui extends JFrame {
 
         int year = getYear((String) sevenDropdown.getSelectedItem());
         String semester = (String) eightDropdown.getSelectedItem();
-        curriculum.editCourse(courseDetails, year, semester);
+
+        try {
+            curriculum.editCourse(courseDetails, year, semester);
+        } catch (ValueOutOfRangeException e){
+            JOptionPane.showMessageDialog(null, "Units must be from 1 to 6 only", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         JOptionPane.showMessageDialog(null, "Changes saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -669,6 +674,7 @@ public class CurriculumGui extends JFrame {
 
 
     private void calculateGPA() {
+        JOptionPane.showMessageDialog(null, "Your GPA is " + curriculum.calculateGPA(),  "", JOptionPane.INFORMATION_MESSAGE);
     }
 
 }

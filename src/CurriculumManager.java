@@ -10,4 +10,5 @@ public interface CurriculumManager {
     void editCourse(ArrayList<String[]> courseDetails, int year, String term) throws ValueOutOfRangeException;
 
     double calculateGPA();
+    void reset();
 }

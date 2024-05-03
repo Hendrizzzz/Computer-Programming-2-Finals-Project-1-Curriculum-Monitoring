@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CurriculumManagement implements CurriculumManager{
-    private static final String fileName = "Curriculum.txt";
+    private static final String fileName = "Files/Curriculum.txt";
     private static final ArrayList<Course> courses = new ArrayList<>();
 
 
@@ -119,14 +119,14 @@ public class CurriculumManagement implements CurriculumManager{
      */
     @Override
     public double calculateGPA() {
-        int units = 0;
+        double units = 0;
         double score = 0;
         for (Course course : courses){
             if (course.getGrade() == 0){
                 continue;
             }
-            score += course.getGrade();
-            units += (int) course.getUnits();
+            score += course.getGrade() * course.getUnits();
+            units += course.getUnits();
         }
         return score/units;
     }
@@ -152,8 +152,8 @@ public class CurriculumManagement implements CurriculumManager{
     }
 
     public void reset() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("Original Curriculum.txt"));
-             BufferedWriter writer = new BufferedWriter(new FileWriter("Curriculum.txt")))  {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Files/Original Curriculum.txt"));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("Files/Curriculum.txt")))  {
 
             String line;
             while ((line = reader.readLine()) != null){
